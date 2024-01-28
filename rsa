@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+
+import sys
+from math import isqrt
+
+
+def is_prime(num):
+    if num < 2:
+        return False
+    for i in range(2, isqrt(num) + 1):
+        if num % i == 0:
+            return False
+
+    return True
+
+def factorize_rsa_number(n):
+    # Find the prime factors (p and q)
+    for i in range(2, isqrt(n) + 1):
+        if n % i == 0 and is_prime(i) and is_prime(n // i):
+            return i, n // i
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: ./rsa <file>")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                rsa_number = int(line.strip())
+                factor1, factor2 = factorize_rsa_number(rsa_number)
+                if factor1 is not none:
+                    print(f"{rsa_number}={factor1}*{factor2}")
+                else:
+                    print(f"Error: Unable to find prime factors for {rsa_number}")
+
+
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        sys.exit(1)
+    except ValueError:
+        print("Error: Please make sure all lines are valid RSA numbers.")
+        sys.exit(1)
+
